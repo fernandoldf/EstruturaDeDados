@@ -7,7 +7,7 @@ class Node:
 
 
 class DCLL:
-    #creates Double Circular Linked List
+    #creates Doubly Circular Linked List
     def __init__(self) -> None:
         self.tail = None
 
@@ -23,10 +23,62 @@ class DCLL:
         self.tail = newNode
         return
     
-    def moveNodeToIndex(self, node: Node, index: int) -> None:
-        #TODO
-        pass
-    
+    def moveNodeToIndex(self, data: str, index: int) -> None:
+        if index < 0:
+            print("Index must be a positive Integer.")
+            return
+        if self.tail is None:
+            print("The list is empty")
+            return
+
+        # Find the node and its current index
+        current = self.tail.next
+        desired_node = None
+        current_index = 0
+        length = 0
+        while True:
+            if current.data == data and desired_node is None:
+                desired_node = current
+                desired_node_index = current_index
+            current = current.next
+            current_index += 1
+            length += 1
+            if current == self.tail.next:
+                break
+
+        if desired_node is None:
+            print(f"Node with data '{data}' not found.")
+            return
+
+        if index >= length:
+            print("Index out of range.")
+            return
+
+        if index == desired_node_index:
+            print("Node is already at the desired index.")
+            return
+
+        #remove desired_node
+        desired_node.prev.next = desired_node.next
+        desired_node.next.prev = desired_node.prev
+        if desired_node == self.tail:
+            self.tail = desired_node.prev
+
+        #insert at new index
+        current = self.tail.next
+        for _ in range(index):
+            current = current.next
+
+        desired_node.prev = current.prev
+        desired_node.next = current
+        current.prev.next = desired_node
+        current.prev = desired_node
+
+        #update tail if inserted at the end
+        if index == length - 1:
+            self.tail = desired_node
+
+
     def invertedList(self) -> None:
         if self.tail is None or self.tail.next == self.tail:  #testing no node or one node
             return
@@ -85,5 +137,10 @@ playlist = PlayList()
 playlist.addMusic("Numb")
 playlist.addMusic("Crawling")
 playlist.addMusic("In The End")
+playlist.addMusic("Somewhere I Belong")
+playlist.addMusic("Faint")
+playlist.addMusic("What I've Done")
 playlist.invertedList()
+playlist.invertedList()
+playlist.moveNodeToIndex("What I've Done", 4)
 playlist.printPlaylist()
