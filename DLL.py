@@ -86,6 +86,7 @@ class DCLL:
         support_node = self.tail
         while(True):
             support_node.prev, support_node.next = support_node.next, support_node.prev
+            #one of the benefits of using a doubly linked list is the ability to easily reverse the direction.
             support_node = support_node.next
             if support_node == self.tail:  #will break loop when it goes back to the tail
                 break
@@ -125,7 +126,7 @@ class PlayList(DCLL):
         return
     
     def playPrev(self) -> None:
-        self.current = self.current.prev
+        self.current = self.current.prev  #one of the benefits of using DLL
         return
     
     def printPlaylist(self) -> None:
@@ -140,7 +141,10 @@ playlist.addMusic("In The End")
 playlist.addMusic("Somewhere I Belong")
 playlist.addMusic("Faint")
 playlist.addMusic("What I've Done")
+playlist.playNext()
+playlist.playPrev()
 playlist.invertedList()
 playlist.invertedList()
+playlist.moveNodeToIndex("Numb", 2)
 playlist.moveNodeToIndex("What I've Done", 4)
 playlist.printPlaylist()
